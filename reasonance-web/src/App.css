@@ -1,0 +1,1229 @@
+/* Add at the top of the file */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --border-color: #d1d5db;
+  --accent-color: #4338ca;
+  --accent-hover: #3730a3;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.15);
+  --accent-color-rgb: 67, 56, 202;
+}
+
+/* Base reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Main app container */
+.app {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  height: 64px;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Left side of navbar */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-brand h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.navbar-brand h1:hover {
+  color: var(--accent-color);
+}
+
+.navbar-brand .session-title {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--border-color);
+}
+
+/* Right side of navbar */
+.navbar-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.username {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+}
+
+.username::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  display: inline-block;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.username:hover {
+  background: var(--input-bg);
+}
+
+/* Navbar button specific style */
+.nav-button {
+  background: var(--accent-color);
+  color: white !important;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Session selection screen */
+.session-selection {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.session-section {
+  margin-bottom: 2.5rem;
+}
+
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.session-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.session-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px var(--shadow-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.session-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.session-card.active {
+  border-left: 4px solid #4CAF50;
+}
+
+.session-card.archived {
+  border-left: 4px solid #9E9E9E;
+}
+
+.session-info {
+  flex: 1;
+}
+
+.session-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+}
+
+.session-stats {
+  display: flex;
+  gap: 16px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.session-date {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin-top: 8px;
+}
+
+.session-card button {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent-color);
+  color: white !important;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.session-card button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.create-session-btn {
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent-color);
+  color: white !important;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.create-session-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Main content area */
+.content-container {
+  display: flex;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
+
+.shared-view {
+  flex: 0.75; /* 75% of remaining space */
+  padding: 2rem;
+  overflow-y: auto;
+  background: var(--bg-primary);
+}
+
+.chat-panel {
+  flex: 0.25;
+  min-width: 300px;
+  max-width: 400px;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+/* Button styles */
+button {
+  background: var(--text-primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Transcript area */
+.transcripts {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 1rem;
+  padding-right: 0.5rem;
+  display: flex;
+  flex-direction: column-reverse; /* Show newest messages at bottom */
+}
+
+.transcript-entry {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 1px 2px var(--shadow-color);
+}
+
+.transcript-entry:hover {
+  background: var(--bg-secondary);
+}
+
+.transcript-entry p {
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 0.25rem;
+}
+
+.transcript-entry small {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.transcript-entry strong {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.transcript-entry.selected {
+  background: var(--accent-color);
+  border-color: var(--accent-hover);
+}
+
+.transcript-entry.selected p,
+.transcript-entry.selected strong,
+.transcript-entry.selected small {
+  color: white;
+}
+
+/* Scrollbar styling */
+.transcripts::-webkit-scrollbar {
+  width: 6px;
+}
+
+.transcripts::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 3px;
+}
+
+.transcripts::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.transcripts::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Heading styles */
+h2 {
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+/* Navbar text */
+.navbar h1,
+.navbar .session-title,
+.navbar .username {
+  color: var(--text-primary);
+}
+
+/* Name entry screen */
+.name-entry {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.name-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  gap: 1rem;
+}
+
+.name-form input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.name-form input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+}
+
+.name-form button {
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.timeline-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 2rem;
+  border-left: 2px solid var(--accent-color);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-color);
+}
+
+.artifact-entry {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.session-card.archived {
+  border-left: 4px solid var(--accent-color);
+  opacity: 0.8;
+}
+
+.session-card.archived:hover {
+  opacity: 1;
+}
+
+/* Chat panel styling */
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  margin-bottom: 80px;
+  scroll-behavior: smooth;
+}
+
+.message-wrapper {
+  padding: 1rem;
+  width: 100%;
+}
+
+.message-wrapper:last-child {
+  margin-bottom: 1rem;
+}
+
+.transcript-content {
+  position: relative;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+  transition: all 0.2s ease;
+}
+
+.transcript-content.self {
+  background: rgba(var(--accent-color-rgb), 0.05);
+  border-left: 2px solid var(--accent-color);
+}
+
+.transcript-content.self .speaker-label {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.transcript-content.other {
+  background: transparent;
+}
+
+.transcript-content.other .speaker-label {
+  color: var(--text-secondary);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.speaker-label {
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.timestamp {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.transcript-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.chat-controls {
+  position: fixed;
+  bottom: 0;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem;
+  z-index: 10;
+  width: inherit;
+  max-width: inherit;
+  box-shadow: 0 -4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.message-input-container {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  width: 100%;
+}
+
+.message-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  max-height: 120px;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  resize: none;
+}
+
+.message-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.1);
+}
+
+.button-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.record-button {
+  height: 44px;
+  width: 44px;
+  padding: 0;
+  border-radius: 6px;
+  background: var(--accent-color);
+  color: white;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+.record-button.recording {
+  background: #DC2626;
+  animation: pulse 2s infinite;
+}
+
+.send-button {
+  height: 44px;
+  padding: 0 1.5rem;
+  border-radius: 6px;
+  background: var(--accent-color);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+}
+
+.record-button:hover,
+.send-button:hover {
+  background: var(--accent-hover);
+}
+
+.send-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--text-secondary);
+}
+
+.archived-message {
+  position: fixed;
+  bottom: 0;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem;
+  z-index: 10;
+  width: inherit;
+  max-width: inherit;
+  text-align: center;
+}
+
+.chat-panel[data-archived="true"] {
+  opacity: 0.95;
+}
+
+.chat-panel[data-archived="true"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--text-secondary);
+  opacity: 0.3;
+}
+
+/* Brand logo styling */
+.brand-logo {
+  margin-right: 0.5rem;
+  transform: scale(1.1);  /* Slightly larger logo */
+}
+
+.brand-logo .waves {
+  transform-origin: center;
+  filter: drop-shadow(0 0 2px var(--accent-color));
+}
+
+.brand-logo .wave {
+  stroke: var(--accent-color);
+  stroke-linecap: round;
+  transform-origin: center;
+  stroke-width: 2.5px;
+}
+
+.brand-logo .wave-1 {
+  opacity: 0.4;
+  animation: wave1 3s ease-in-out infinite;
+}
+
+.brand-logo .wave-2 {
+  opacity: 0.7;
+  animation: wave2 3s ease-in-out infinite;
+  animation-delay: 0.15s;
+}
+
+.brand-logo .wave-3 {
+  opacity: 1;
+  animation: wave3 3s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+@keyframes wave1 {
+  0% { transform: translateY(0) scaleY(1); }
+  25% { transform: translateY(2px) scaleY(0.8); }
+  50% { transform: translateY(-1px) scaleY(1.1); }
+  75% { transform: translateY(1px) scaleY(0.9); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+
+@keyframes wave2 {
+  0% { transform: translateY(0) scaleY(1); }
+  30% { transform: translateY(-1.5px) scaleY(1.1); }
+  60% { transform: translateY(1px) scaleY(0.9); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+
+@keyframes wave3 {
+  0% { transform: translateY(0) scaleY(1); }
+  40% { transform: translateY(1px) scaleY(0.9); }
+  70% { transform: translateY(-1px) scaleY(1.05); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+
+/* Add hover effect */
+.navbar-brand:hover .brand-logo .waves {
+  filter: drop-shadow(0 0 3px var(--accent-color));
+}
+
+.navbar-brand:hover .wave {
+  animation-duration: 2s;
+}
+
+/* Update media query to handle system preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #374151;
+    --accent-color: #818cf8;
+    --accent-hover: #a5b4fc;
+    --card-bg: #1f2937;
+    --input-bg: #374151;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Optional: Add smooth scrolling to the messages container */
+.chat-messages {
+  scroll-behavior: smooth;
+}
+
+.text-segment {
+  position: relative;
+  display: inline;
+}
+
+/* Add these styles at the end of the file */
+.loading-spinner {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--bg-secondary);
+  border-radius: 50%;
+  border-top-color: var(--accent-color);
+  animation: spin 1s ease-in-out infinite;
+  margin: 2rem auto;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 100%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Add style for empty timestamp */
+.anchor-tooltip:empty {
+  display: none;
+}
+
+/* Archived session styling */
+.archived-message {
+  position: fixed;
+  bottom: 0;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem;
+  z-index: 10;
+  width: inherit;
+  max-width: inherit;
+}
+
+/* Disable interaction styles for archived sessions */
+.chat-panel[data-archived="true"] .transcript-text {
+  cursor: default;
+}
+
+.chat-panel[data-archived="true"] .anchor-point {
+  cursor: default;
+}
+
+/* Visual indicator for archived session */
+.chat-panel[data-archived="true"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--text-secondary);
+  opacity: 0.3;
+}
+
+/* Modify existing styles for archived state */
+.chat-panel[data-archived="true"] .chat-messages {
+  opacity: 0.95;
+}
+
+/* Ensure archived message has consistent theme */
+[data-theme="dark"] .archived-message {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-top-color: var(--border-color);
+}
+
+/* Add these styles for self-messages */
+.transcript-content.self {
+  position: relative;
+  background: rgba(var(--accent-color-rgb), 0.05);
+  border-left: 2px solid var(--accent-color);
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+}
+
+.transcript-content.self::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent-color);
+  opacity: 0.6;
+}
+
+.transcript-content.self .speaker-label {
+  background: linear-gradient(120deg, var(--accent-color), var(--accent-hover));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 600;
+}
+
+/* Add subtle spacing between messages */
+.transcript-content {
+  position: relative;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+/* Optional: Add subtle hover effect for all messages */
+.transcript-content:hover {
+  background: linear-gradient(
+    to right,
+    var(--bg-secondary),
+    transparent 90%
+  );
+}
+
+/* Message wrapper to ensure consistent alignment */
+.message-wrapper {
+  padding: 1rem;
+  width: 100%;
+}
+
+/* Base message styling */
+.transcript-content {
+  position: relative;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin: 0.25rem 0;
+}
+
+/* Message header styling */
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.speaker-label {
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.timestamp {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* Message text styling */
+.transcript-text {
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+/* Self message styling */
+.transcript-content.self {
+  background: rgba(var(--accent-color-rgb), 0.05);
+}
+
+.transcript-content.self .speaker-label {
+  color: var(--accent-color);
+}
+
+/* Other message styling */
+.transcript-content.other {
+  background: transparent;
+}
+
+.transcript-content.other .speaker-label {
+  color: var(--text-secondary);
+}
+
+/* Remove any potential nested backgrounds */
+.transcript-content > * {
+  background: transparent;
+}
+
+/* Chat messages container */
+.chat-messages {
+  padding: 1rem;
+}
+
+/* Chat controls styling */
+.chat-controls {
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Input styling */
+.message-input {
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+/* Button group styling */
+.record-button,
+.send-button {
+  height: 44px;
+  padding: 0 0.75rem;
+}
+
+/* Argument Graph Styles */
+.argument-graph {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-primary);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.argument-graph svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Graph container */
+.graph-container {
+  transition: transform 0.2s ease;
+}
+
+/* Node styles */
+.node circle {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.node:hover circle {
+  filter: brightness(1.1);
+  transform: scale(1.05);
+}
+
+.node text.speaker-label {
+  fill: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.node text.type-indicator {
+  fill: white;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.node.selected circle {
+  stroke: #FFD700;
+  stroke-width: 3px;
+}
+
+/* Link styles */
+.links line {
+  transition: all 0.2s ease;
+}
+
+.links line:hover {
+  stroke-width: 3px;
+  filter: brightness(1.2);
+}
+
+/* Graph tooltip */
+.graph-tooltip {
+  background: var(--card-bg);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px var(--shadow-color);
+  pointer-events: none;
+  z-index: 100;
+  max-width: 280px;
+}
+
+.graph-tooltip .speaker {
+  color: var(--accent-color);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.graph-tooltip .type {
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.graph-tooltip .summary {
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1a1b1e;
+    --bg-secondary: #2a2b2e;
+    --text-primary: #e5e7eb;
+    --text-secondary: #9ca3af;
+    --border-color: #374151;
+    --card-bg: #2a2b2e;
+    --input-bg: #374151;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .node text.speaker-label {
+    fill: var(--text-secondary);
+  }
+
+  .graph-tooltip {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+  }
+
+  .graph-tooltip .speaker {
+    color: var(--accent-color);
+  }
+}
+
+/* Graph controls */
+.graph-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.reset-view-button,
+.copy-json-button {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.reset-view-button:hover,
+.copy-json-button:hover {
+  background: var(--bg-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px var(--shadow-color);
+}
+
+/* Update the copy-json-button styles */
+.copy-json-button {
+  position: absolute;
+  bottom: 10px;
+  left: 10px; /* Move to left side instead of right */
+  z-index: 10;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.copy-json-button:hover {
+  opacity: 1;
+  background: var(--bg-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Optional: Update icon size */
+.copy-json-button::before {
+  content: "📋";
+  font-size: 0.8rem;
+}
+
+/* Node type indicators */
+.node text {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  user-select: none;
+}
+
+/* Add styles for message wrapper to ensure proper spacing */
+.message-wrapper:last-child {
+  margin-bottom: 1rem; /* Add extra space for last message */
+}
+
+/* Edge interaction improvements */
+.edge-hitbox {
+  stroke-width: 20px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.edge-visible {
+  transition: all 0.2s ease;
+  stroke-width: 2px;
+}
+
+/* Edge selection handle improvements */
+.edge-handle {
+  fill: var(--bg-primary);
+  stroke: currentColor;
+  stroke-width: 2;
+  r: 6;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  filter: drop-shadow(0 1px 2px var(--shadow-color));
+  pointer-events: all;
+}
+
+/* Show handle immediately on edge group hover */
+.edge-group:hover .edge-handle {
+  opacity: 1;
+}
+
+/* Make the handle more prominent on hover */
+.edge-handle:hover {
+  r: 8;
+  stroke-width: 3;
+}
+
+/* Selected edge styling */
+.edge-group.selected .edge-visible {
+  stroke-width: 3px;
+  filter: drop-shadow(0 0 3px currentColor);
+}
+
+.edge-group.selected .edge-handle {
+  opacity: 1;
+  fill: currentColor;
+  stroke: var(--bg-primary);
+  r: 7;
+}
+
+/* Add a subtle background to make handle more visible */
+.edge-handle::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: var(--bg-primary);
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.8;
+}
+
+/* Node selection improvements */
+.node .selection-ring {
+  fill: none;
+  stroke: #FFD700;
+  stroke-width: 3px;
+  stroke-dasharray: 8,4;
+  opacity: 0;
+  transition: all 0.2s ease;
+  r: 26;
+}
+
+.node:hover .selection-ring {
+  opacity: 0.5;
+}
+
+.node.selected .selection-ring {
+  opacity: 1;
+  animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
