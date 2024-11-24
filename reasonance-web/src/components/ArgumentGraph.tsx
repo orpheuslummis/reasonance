@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { ArgumentEdge, ArgumentNode, ArgumentType, Position } from "../types";
+import { API_CONFIG } from "../config";
 
 interface GraphNode extends d3.SimulationNodeDatum {
     id: string;
@@ -547,6 +548,164 @@ export function ArgumentGraph({
             });
     };
 
+    const analyzeSelection = async (nodes: GraphNode[], edges: GraphLink[]) => {
+        try {
+            // Remove any existing analysis display
+            const existingAnalysis = document.querySelector(
+                ".selection-analysis",
+            );
+            if (existingAnalysis) {
+                document.body.removeChild(existingAnalysis);
+            }
+
+            const response = await fetch(
+                `${API_CONFIG.BASE_URL}/analyze-selection`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        nodes: nodes.map((node) => ({
+                            id: node.id,
+                            speaker: node.speaker,
+                            summary: node.summary,
+                            type: node.type,
+                        })),
+                        edges: edges.map((edge) => ({
+                            source: (edge.source as GraphNode).id,
+                            target: (edge.target as GraphNode).id,
+                            type: edge.type,
+                        })),
+                    }),
+                },
+            );
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || "Analysis failed");
+            }
+
+            const result = await response.json();
+
+            // Create analysis display with improved styling
+            const analysisDiv = document.createElement("div");
+            analysisDiv.className = "selection-analysis";
+            analysisDiv.innerHTML = `
+                <h3>Analysis Results</h3>
+                <div class="analysis-content">
+                    <h4>Main Themes</h4>
+                    <ul>
+                        ${
+                result.analysis.main_themes.map((theme: string) =>
+                    `<li>${theme}</li>`
+                ).join("")
+            }
+                    </ul>
+                    <h4>Key Points</h4>
+                    <ul>
+                        ${
+                result.analysis.key_points.map((point: string) =>
+                    `<li>${point}</li>`
+                ).join("")
+            }
+                    </ul>
+                    <h4>Conclusion</h4>
+                    <p>${result.analysis.conclusion}</p>
+                    <div class="confidence">
+                        Confidence: ${
+                Math.round(result.analysis.confidence * 100)
+            }%
+                    </div>
+                </div>
+            `;
+
+            // Add improved styling
+            const style = document.createElement("style");
+            style.textContent = `
+                .selection-analysis {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: var(--bg-primary, #ffffff);
+                    padding: 24px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                    max-width: 600px;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    z-index: 1000;
+                }
+                .selection-analysis h3 {
+                    margin-top: 0;
+                    color: var(--text-primary, #333333);
+                    font-size: 1.5rem;
+                    margin-bottom: 1rem;
+                }
+                .selection-analysis h4 {
+                    color: var(--text-primary, #333333);
+                    margin: 1rem 0 0.5rem;
+                }
+                .analysis-content {
+                    color: var(--text-secondary, #666666);
+                }
+                .analysis-content ul {
+                    margin: 0.5rem 0;
+                    padding-left: 1.5rem;
+                }
+                .analysis-content li {
+                    margin: 0.25rem 0;
+                }
+                .confidence {
+                    margin-top: 1.5rem;
+                    padding-top: 1rem;
+                    border-top: 1px solid var(--border-color, #eaeaea);
+                    font-weight: bold;
+                    color: var(--text-primary, #333333);
+                }
+            `;
+
+            document.head.appendChild(style);
+            document.body.appendChild(analysisDiv);
+
+            // Add close button with improved styling
+            const closeButton = document.createElement("button");
+            closeButton.innerHTML = "×";
+            closeButton.style.cssText = `
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: var(--text-primary, #333333);
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                transition: background-color 0.2s;
+                &:hover {
+                    background-color: var(--hover-bg, rgba(0,0,0,0.05));
+                }
+            `;
+            closeButton.onclick = () => {
+                document.body.removeChild(analysisDiv);
+            };
+            analysisDiv.appendChild(closeButton);
+        } catch (error) {
+            console.error("Analysis error:", error);
+            alert(
+                error instanceof Error
+                    ? error.message
+                    : "Failed to analyze selection",
+            );
+        }
+    };
+
     return (
         <div className="argument-graph">
             <svg ref={svgRef} style={{ width: "100%", height: "100%" }} />
@@ -612,8 +771,6 @@ export function ArgumentGraph({
                     </button>
                     <button
                         onClick={() => {
-                            if (!onSelectionAnalysis) return;
-
                             const selectedNodes = simulationDataRef.current
                                 .nodes.filter(
                                     (n: GraphNode) =>
@@ -628,8 +785,7 @@ export function ArgumentGraph({
                                             }`,
                                         ),
                                 );
-
-                            onSelectionAnalysis(selectedNodes, selectedEdges);
+                            analyzeSelection(selectedNodes, selectedEdges);
                         }}
                         style={{
                             padding: "8px 12px",

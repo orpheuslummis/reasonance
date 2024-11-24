@@ -12,6 +12,7 @@ import os
 
 from .session_manager import SessionManager
 from .models import Session
+from .selection_analyzer import analyze_selection
 
 # Setup logging
 logger = logging.getLogger(__name__)
@@ -762,3 +763,27 @@ async def process_audio_and_update(
     except Exception as e:
         logger.error(f"Audio processing error: {e}")
         logger.exception("Full traceback:")
+
+
+@app.post("/analyze-selection")
+async def analyze_selection_endpoint(selection_data: dict):
+    """Analyze a selected subgraph of nodes and edges"""
+    try:
+        selected_nodes = selection_data.get("nodes", [])
+        selected_edges = selection_data.get("edges", [])
+
+        if not selected_nodes:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No nodes selected for analysis",
+            )
+
+        analysis = await analyze_selection(nodes=selected_nodes, edges=selected_edges)
+
+        return {"status": "success", "analysis": analysis}
+
+    except Exception as e:
+        logger.error(f"Selection analysis error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
